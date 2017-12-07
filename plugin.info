@@ -1,0 +1,13 @@
+{
+  "title": "$:/plugins/alvsan1/semantic",
+  "description": "Add semantic concept's in your wiki",
+  "author": "Alvaro Sanchez",
+  "version": "0.0.1",
+  "released": "Sat, 18 Mar 2017 21:08:09 GMT",
+  "core-version": ">=5.0.0",
+  "source": "https://github.com/alvsan/Semantic_TW5-TiddlyMap",
+  "type": "application/json",
+  "plugin-type": "plugin",
+  "dependents": "$:/plugins/felixhayashi/tiddlymap",
+  "depends": "$:/plugins/felixhayashi/tiddlymap"
+}

@@ -1,0 +1,17 @@
+title: $:/linekedhealth/property_view
+
+\define propertylabel()
+<$tiddler tiddler={{!!oproperty}} >
+
+* <$view field="label" />
+</$tiddler>
+\end
+
+\define valorlabel()
+<$tiddler tiddler={{!!ovalor}} >
+
+*# <$view field="label"  />
+</$tiddler>
+\end
+
+ <<propertylabel>> <<valorlabel>>

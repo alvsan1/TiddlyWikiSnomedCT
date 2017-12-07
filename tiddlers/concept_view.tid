@@ -1,0 +1,69 @@
+title: $:/linekedhealth/concept_view
+
+\define levelFilter() [tag[$(tiddly-source)$]each[description]sort[description]]
+
+\define propertyFilter() [tag[$(tiddly-source)$]each[oproperty]sort[oproperty]]
+
+\define MyFilter()
+[tag[$(tiddly-source)$]oproperty{!!oproperty}]
+\end
+
+\define propertylabel()
+<$tiddler tiddler={{!!oproperty}} >
+
+*<$link to={{!!title}}>
+<$view field="label" />
+</$link>
+</$tiddler>
+\end
+
+\define valuelabel()
+<$tiddler tiddler={{!!ovalor}} >
+
+**<$link to={{!!title}}>
+<$view field="label" />
+</$link>
+</$tiddler>
+\end
+
+\define list2View()
+<$list filter=<<MyFilter>> >
+<div class="tw-menu-list-subitem">
+<<valuelabel>>
+</div></$list>
+\end
+
+\define listView()
+
+<$list filter=<<levelFilter>> >
+<div class="tw-menu-list-subitem">
+
+!<$view field="description" />
+</div>
+
+<$set name="description-source" value={{!!description}}>
+<$list filter=<<propertyFilter>> >
+<div class="tw-menu-list-subitem">
+<<propertylabel>>
+</div>
+<<list2View>>
+</$list>
+</$set>
+
+</$list>
+
+
+\end
+
+!Label
+<$view field="label" format="htmlencodedplainwikified"></$view>
+
+!Terms
+<$view field="term" format="htmlencodedplainwikified"></$view>
+
+!Synonym
+<$view field="synonym" format="htmlencodedplainwikified"></$view>
+
+<$set name="tiddly-source" value={{!!title}}>
+<<listView>>
+</$set>

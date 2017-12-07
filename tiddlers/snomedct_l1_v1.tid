@@ -1,0 +1,16 @@
+title: $:/linekedhealth/snomedct_l1_v1
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sctf: <http://snomed.info/field/>
+PREFIX scti: <http://snomed.info/id/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+Select ?concept ?description ?property (concat('[\"', (group_concat( ?oconcept ; separator="\",\"" )) , '\"]' ) as ?oconcepts)
+where { ?concept sctf:Description.term.en-us.preferred ?description .
+        ?concept rdfs:subClassOf scti:138875005  .
+		?concept ?property ?oconcept . 	
+    FILTER (  ?property != sctf:Description.term.en-us.preferred) .
+  	FILTER ( ?oconcept != owl:Class ) . 
+  	OPTIONAL { ?oconcept sctf:Description.term.en-us.preferred ?odescription }
+}
+group by ?concept ?description ?property

@@ -1,0 +1,2 @@
+title: $:/linekedhealth/label_view
+<$view field="label" format="htmlencodedplainwikified"></$view>

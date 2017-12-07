@@ -1,0 +1,33 @@
+title: $:/linekedhealth/snomedct_l1_v2
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sctf: <http://snomed.info/field/>
+PREFIX scti: <http://snomed.info/id/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Select ?property ?description ?label ?list ?oproperty ?odescprition ?olabel ?ovalor ?ovdescprition ?ovlabel
+where {  
+  {GRAPH ?g { ##snomedCT## ?property ?oconcept }} UNION
+  {GRAPH ?g { ?oconcept ?property ##snomedCT## }} UNION
+  {GRAPH ?g { ?list rdf:first ##snomedCT## .
+      ?list rdf:rest ?list2 .
+      ?list2 rdf:first ?oconcept .
+      ?oconcept owl:onProperty ?property ;
+          owl:someValuesFrom* ?bag1 .
+      ?bag1 owl:onProperty ?oproperty ;
+          owl:someValuesFrom ?ovalor .
+      ?property sctf:Description.term.en-us.preferred ?description ;
+            rdfs:label ?label .
+      ?oproperty sctf:Description.term.en-us.preferred ?odescprition ;
+            rdfs:label ?olabel .
+      ?ovalor sctf:Description.term.en-us.preferred ?ovdescprition ;
+            rdfs:label ?ovlabel .
+  }} 
+  FILTER ( ?property != sctf:Description.term.en-us.preferred) .
+  FILTER ( ?property != rdf:first ) .
+  FILTER ( ?oconcept != owl:Class ) .
+  FILTER (  !isBlank ( ?ovalor ) ) .
+  FILTER ( ?oconcept != rdf:nil ) 
+}
+group by ?property ?description ?label ?list ?oproperty ?odescprition ?olabel ?ovalor ?ovdescprition ?ovlabel
