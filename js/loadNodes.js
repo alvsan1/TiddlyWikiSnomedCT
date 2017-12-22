@@ -43,6 +43,7 @@ exports.startup = function(callback) {
 				var nodeOId = $tm.adapter.getId(oelement);
 				var myViewName = JSON.parse($tw.wiki.getTiddlerAsJson(oelement)).label ;
 				var myView = new $tm.ViewAbstraction( myViewName );
+				
 
 				JSON.parse(JSON.parse(know).concepts).forEach( function(ct){
 						//Indentifico el nodo que incorpora conocimiento
@@ -58,7 +59,7 @@ exports.startup = function(callback) {
 											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
 											 term: "",								 
 											 state: "$:/state/" + ct.oproperty.value,
-											 default: "$(currentTiddler)$_Summary"
+											 default: "$(currentTiddler)"
 
 											};
 							
@@ -71,7 +72,10 @@ exports.startup = function(callback) {
 
 							newView.addNode( node );
 							newView.addPlaceholder( node );
-							newView.saveNodePosition(node);
+							newView.saveNodePosition(node);							
+
+		    //var nodeId = $tm.adapter.getId(newNode);  					
+
 
 						}
 
@@ -102,7 +106,7 @@ exports.startup = function(callback) {
 										 ovalor: ct.ovalor.value,
 										 state: "$:/state/" + ct.list.value,  
 										 //text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
-										 default: "$(currentTiddler)$_Summary",
+										 default: "$(currentTiddler)",
 										 tags: [oelement]
 										};
 
@@ -118,7 +122,7 @@ exports.startup = function(callback) {
 											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
 											 term: "",								 
 											 state: "$:/state/" + ct.oconcept.value ,
-											 default: "$(currentTiddler)$_Summary"
+											 default: "$(currentTiddler)"
 
 											};
 							
@@ -128,21 +132,32 @@ exports.startup = function(callback) {
 						}
 
 						var node = $tm.adapter.selectNodeById(nodeId);
-
-						var newView = new $tm.ViewAbstraction(ct.olabel.value,{ isCreate: true});
-
-						newView.addNode( node );
-						newView.addPlaceholder( node );
-						newView.saveNodePosition(node);
+						node.x = 0;
+						node.y = 0;
 
 						myView.addNode( node );
 						myView.addPlaceholder( node );
 						myView.saveNodePosition(node);
 
-						var edgeId = $tm.adapter.getId("rdfs:subClassOf");
-						if ( typeof  edgeId === "undefined" ) {
+						var newView = new $tm.ViewAbstraction(ct.olabel.value,{ isCreate: true});
+						newView.setConfig({physics_mode: true, know: true, url: ct.oconcept.value });
 
-						}
+
+						newView.addNode( node );
+						newView.addPlaceholder( node );
+						newView.saveNodePosition(node);
+
+						
+						
+
+						var nodosvista = myView.getNodeData();
+						nodosvista[nodeId]['open-view'] = ct.olabel.value;
+						myView.saveNodeData(nodosvista);
+
+						//var edgeId = $tm.adapter.getId("rdfs:subClassOf");
+						/*if ( typeof  edgeId === "undefined" ) {
+
+						}*/
 						
 
 						//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
