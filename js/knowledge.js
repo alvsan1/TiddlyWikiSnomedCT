@@ -65,6 +65,7 @@ exports.startup = function(callback) {
 			
 			console.log("-----------------Actualizando----------------------/n");
 			if (JSON.parse(vista)['config.know'] == "true" ) {
+				$tw.wiki.setText("$:/plugins/felixhayashi/tiddlymap/graph/views/" + vistName,"config.know",0,false,"");
 				var queryKw = $tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v2").fields.text.replace(/##snomedCT##/g,"<"+JSON.parse(vista)['config.url']+">");
 				console.log(queryKw);
 				client.get("http://10.0.3.15:8080/rdf4j-server/repositories/snomed02?query=" + encodeURIComponent(queryKw),args, function (dataV, responseV) {	

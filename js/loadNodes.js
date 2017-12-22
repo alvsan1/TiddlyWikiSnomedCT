@@ -27,73 +27,133 @@ exports.startup = function(callback) {
 		
 		var vistasL2 = $tw.wiki.filterTiddlers("[newkn[true]]");
 		vistasL2.forEach( function (nodeName) {
-			var known = $tw.wiki.getTiddlerAsJson(nodeName);
+			
+			//$tw.wiki.setText(nodeName,"tags",0,"[]","");
+
+
+			var know = $tw.wiki.getTiddlerAsJson(nodeName);
+			$tw.wiki.deleteTiddler(nodeName);
+
 			//Generalizarlo para cualquier repo
 			//var config = JSON.parse($tw.wiki.getTiddlerAsJson("SnomedCT Config"));
 			var oelement = nodeName.replace("Kn__","");
-			JSON.parse(JSON.parse(known).concepts).forEach( function(ct){
-					//Indentifico el nodo que incorpora conocimiento
-				
-				//var selement = ct.oproperty.value;
+			if ( JSON.parse($tw.wiki.getTiddlerAsJson(oelement)).know === "true" ){
+				$tw.wiki.setText(oelement,"know",0,"false","");
 
-				var nodeId = $tm.adapter.getId(ct.oproperty.value);
+				var nodeOId = $tm.adapter.getId(oelement);
+				var myViewName = JSON.parse($tw.wiki.getTiddlerAsJson(oelement)).label ;
+				var myView = new $tm.ViewAbstraction( myViewName );
 
-				if ( typeof  nodeId === "undefined" ) {
-					var nodeView = { label: ct.olabel.value, 
-									 title: ct.oproperty.value ,									  
-									 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
-									 term: "",								 
-									 state: "$:/state/" + ct.oproperty.value,
-									 default: "$(currentTiddler)$_Summary"
-
-									};
+				JSON.parse(JSON.parse(know).concepts).forEach( function(ct){
+						//Indentifico el nodo que incorpora conocimiento
 					
-					$tw.wiki.addTiddler(nodeView);
-					nodeId = $tm.adapter.assignId(ct.oproperty.value);
-					var node = $tm.adapter.selectNodeById(nodeId);
+					//var selement = ct.oproperty.value;
+					if 	(typeof ct.list != "undefined"){
+						var nodeId = $tm.adapter.getId(ct.oproperty.value);
 
-					var newView = new $tm.ViewAbstraction(node.label,{ isCreate: true});
-					newView.setConfig({physics_mode: true, know: true, url: ct.oproperty.value });
+						if ( typeof  nodeId === "undefined" ) {
+							var nodeView = { label: ct.olabel.value, 
+											 title: ct.oproperty.value ,
+											 know: true, 									  
+											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+											 term: "",								 
+											 state: "$:/state/" + ct.oproperty.value,
+											 default: "$(currentTiddler)$_Summary"
 
-					newView.addNode( node );
-					newView.addPlaceholder( node );
-					newView.saveNodePosition(node);
+											};
+							
+							$tw.wiki.addTiddler(nodeView);
+							nodeId = $tm.adapter.assignId(ct.oproperty.value);
+							var node = $tm.adapter.selectNodeById(nodeId);
 
-				}
+							var newView = new $tm.ViewAbstraction(node.label,{ isCreate: true});
+							newView.setConfig({physics_mode: true, know: true, url: ct.oproperty.value });
 
+							newView.addNode( node );
+							newView.addPlaceholder( node );
+							newView.saveNodePosition(node);
 
-				var nodeOVId = $tm.adapter.getId(ct.ovalor.value);
-
-				if ( typeof  nodeOVId === "undefined" ) {
-					var nodeView = { description: ct.ovdescprition.value, 
-									 title: ct.ovalor.value , 
-									 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
-									 term: "",
-									 label: ct.ovlabel.value,								 
-									 state: "$:/state/" + ct.oproperty.value,
-									 default: "$(currentTiddler)$_Summary"
-
-									};
-					
-					$tw.wiki.addTiddler(nodeView);
-
-				}
+						}
 
 
-				var nodeList = { title: ct.list.value,
-								 description: ct.description.value,
-								 property: ct.property.value, 
-								 oproperty: ct.oproperty.value, 
-								 ovalor: ct.ovalor.value,
-								 state: "$:/state/" + ct.list.value,  
-								 text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
-								 default: "$(currentTiddler)$_Summary",
-								 tags: [oelement]
-								};
+						var nodeOVId = $tm.adapter.getId(ct.ovalor.value);
 
-				$tw.wiki.addTiddler(nodeList);
-			});
-			//$tw.wiki.deleteTiddler(nodeName);
+						if ( typeof  nodeOVId === "undefined" ) {
+							var nodeView = { description: ct.ovdescription.value, 
+											 title: ct.ovalor.value , 
+											 know: true,
+											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+											 term: "",
+											 label: ct.ovlabel.value,								 
+											 state: "$:/state/" + ct.ovalor.value,
+											 default: "$(currentTiddler)$_Summary"
+
+											};
+							
+							$tw.wiki.addTiddler(nodeView);
+
+						}
+
+
+						var nodeList = { title: ct.list.value,
+										 description: ct.description.value,
+										 property: ct.property.value, 
+										 oproperty: ct.oproperty.value, 
+										 ovalor: ct.ovalor.value,
+										 state: "$:/state/" + ct.list.value,  
+										 //text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
+										 default: "$(currentTiddler)$_Summary",
+										 tags: [oelement]
+										};
+
+						$tw.wiki.addTiddler(nodeList);
+					} else if ((typeof ct.oconcept != "undefined") && ( typeof ct.odescription != "undefined" ) ) {
+						var nodeId = $tm.adapter.getId(ct.oconcept.value);
+
+						if ( typeof  nodeId === "undefined" ) {
+							var nodeView = { label: ct.olabel.value, 
+											 title: ct.oconcept.value ,
+											 know: true,
+											 description: ct.odescription.value ,									  
+											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+											 term: "",								 
+											 state: "$:/state/" + ct.oconcept.value ,
+											 default: "$(currentTiddler)$_Summary"
+
+											};
+							
+							$tw.wiki.addTiddler(nodeView);
+							nodeId = $tm.adapter.assignId(ct.oconcept.value);
+							
+						}
+
+						var node = $tm.adapter.selectNodeById(nodeId);
+
+						var newView = new $tm.ViewAbstraction(ct.olabel.value,{ isCreate: true});
+
+						newView.addNode( node );
+						newView.addPlaceholder( node );
+						newView.saveNodePosition(node);
+
+						myView.addNode( node );
+						myView.addPlaceholder( node );
+						myView.saveNodePosition(node);
+
+						var edgeId = $tm.adapter.getId("rdfs:subClassOf");
+						if ( typeof  edgeId === "undefined" ) {
+
+						}
+						
+
+						//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
+						//var edge = { from: nodeOId, to: nodeId, label: edgeLabel, type: ct.property.value};
+						var edge = { from: nodeId, to: nodeOId, label: "subClassOf", type: "rdfs:subClassOf"};
+						$tw.wiki.addTiddler(edge);
+						$tm.adapter.insertEdge(edge);
+
+					}
+				});
+			}			
 		});
 
 
@@ -182,6 +242,7 @@ exports.startup = function(callback) {
 				//var nodeView = { label: ct.description.value, title: ct.concept.value , };
 				var nodeView = { label: ct.description.value, 
 								 title: ct.concept.value , 
+								 know: true,
 								 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
 								 term: "",								 
 								 state: "$:/state/" + ct.concept.value,
@@ -223,7 +284,7 @@ exports.startup = function(callback) {
 
 					var nodePId = $tm.adapter.getId(oconcept);
 					if ( typeof  nodePId === "undefined" ) {
-						var nodeP = { title: oconcept };
+						var nodeP = { title: oconcept, know: true };
 						$tw.wiki.addTiddler(nodeP);
 						var nodePId = $tm.adapter.assignId(oconcept);
 					}

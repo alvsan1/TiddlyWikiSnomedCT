@@ -6,10 +6,14 @@ PREFIX sctf: <http://snomed.info/field/>
 PREFIX scti: <http://snomed.info/id/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-Select ?property ?description ?label ?list ?oproperty ?odescprition ?olabel ?ovalor ?ovdescprition ?ovlabel
+Select ?property ?oconcept ?description ?label ?list ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel
 where {  
-  {GRAPH ?g { ##snomedCT## ?property ?oconcept }} UNION
-  {GRAPH ?g { ?oconcept ?property ##snomedCT## }} UNION
+  {GRAPH ?g { ##snomedCT## ?property ?oconcept .
+      OPTIONAL { ?oconcept sctf:Description.term.en-us.preferred ?description } .
+      OPTIONAL { ?oconcept rdfs:label ?label } }} UNION
+  {GRAPH ?g { ?oconcept ?property ##snomedCT## .
+      OPTIONAL { ?oconcept sctf:Description.term.en-us.preferred ?odescription } .
+      OPTIONAL { ?oconcept rdfs:label ?olabel }  }} UNION
   {GRAPH ?g { ?list rdf:first ##snomedCT## .
       ?list rdf:rest ?list2 .
       ?list2 rdf:first ?oconcept .
@@ -19,15 +23,12 @@ where {
           owl:someValuesFrom ?ovalor .
       ?property sctf:Description.term.en-us.preferred ?description ;
             rdfs:label ?label .
-      ?oproperty sctf:Description.term.en-us.preferred ?odescprition ;
+      ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
             rdfs:label ?olabel .
-      ?ovalor sctf:Description.term.en-us.preferred ?ovdescprition ;
+      ?ovalor sctf:Description.term.en-us.preferred ?ovdescription ;
             rdfs:label ?ovlabel .
   }} 
-  FILTER ( ?property != sctf:Description.term.en-us.preferred) .
   FILTER ( ?property != rdf:first ) .
-  FILTER ( ?oconcept != owl:Class ) .
-  FILTER (  !isBlank ( ?ovalor ) ) .
-  FILTER ( ?oconcept != rdf:nil ) 
+  FILTER ( ?oconcept != owl:Class ) 
 }
-group by ?property ?description ?label ?list ?oproperty ?odescprition ?olabel ?ovalor ?ovdescprition ?ovlabel
+group by ?property ?oconcept ?description ?label ?list ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel

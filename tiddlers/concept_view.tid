@@ -2,7 +2,7 @@ title: $:/linekedhealth/concept_view
 
 \define levelFilter() [tag[$(tiddly-source)$]each[description]sort[description]]
 
-\define propertyFilter() [tag[$(tiddly-source)$]each[oproperty]sort[oproperty]]
+\define propertyFilter() [tag[$(tiddly-source)$]description[$(description-source)$]each[oproperty]sort[oproperty]]
 
 \define MyFilter()
 [tag[$(tiddly-source)$]oproperty{!!oproperty}]
