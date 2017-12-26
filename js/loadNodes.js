@@ -159,14 +159,119 @@ exports.startup = function(callback) {
 
 						}*/
 						
+						
 
-						//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
-						//var edge = { from: nodeOId, to: nodeId, label: edgeLabel, type: ct.property.value};
-						var edge = { from: nodeId, to: nodeOId, label: "subClassOf", type: "rdfs:subClassOf"};
-						$tw.wiki.addTiddler(edge);
-						$tm.adapter.insertEdge(edge);
+						var toWL = [];
+						toWL[oelement] = true;
+						var typeWL = [];
+						typeWL["rdfs:subClassOf"] = true;
+						var listE = $tm.adapter.getEdges( ct.oconcept.value ,toWL, typeWL);
+
+
+
+						if ( Object.keys(listE).length == 0 ) {
+							//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
+							//var edge = { from: nodeOId, to: nodeId, label: edgeLabel, type: ct.property.value};
+							var edge = { from: nodeId, to: nodeOId, label: "subClassOf", type: "rdfs:subClassOf"};
+							$tw.wiki.addTiddler(edge);
+							$tm.adapter.insertEdge(edge);
+
+						}
+
+
+
+
+					} else if ( typeof ct.label != "undefined" )  {
+
+						var nodeId = $tm.adapter.getId(ct.oconcept.value);
+						var node;
+
+						if ( typeof  nodeId === "undefined" ) {
+							var nodeView = { label: ct.label.value, 
+											 title: ct.oconcept.value ,
+											 know: true,
+											 description: ct.description.value ,									  
+											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+											 term: "",								 
+											 state: "$:/state/" + ct.oconcept.value ,
+											 default: "$(currentTiddler)"
+
+											};
+							
+							$tw.wiki.addTiddler(nodeView);
+							nodeId = $tm.adapter.assignId(ct.oconcept.value);
+
+							var newView = new $tm.ViewAbstraction(ct.label.value,{ isCreate: true});
+							newView.setConfig({physics_mode: true, know: true, url: ct.oconcept.value });
+
+							node = $tm.adapter.selectNodeById(nodeId);
+							node.x = 0;
+							node.y = 0;
+
+
+							newView.addNode( node );
+							newView.addPlaceholder( node );
+							newView.saveNodePosition(node);							
+						}
+
+						node = $tm.adapter.selectNodeById(nodeId);
+						node.x = 0;
+						node.y = 0;
+
+						myView.addNode( node );
+						myView.addPlaceholder( node );
+						myView.saveNodePosition(node);
+	
+						
+
+						var nodosvista = myView.getNodeData();
+						nodosvista[nodeId]['open-view'] = ct.label.value;
+						myView.saveNodeData(nodosvista);
+
+						//var edgeId = $tm.adapter.getId("rdfs:subClassOf");
+						/*if ( typeof  edgeId === "undefined" ) {
+
+						}*/
+						
+						var toWL = [];
+						toWL[ct.oconcept.value] = true;
+						var typeWL = [];
+						typeWL["rdfs:subClassOf"] = true;
+						var listE = $tm.adapter.getEdges( oelement ,toWL, typeWL);
+
+
+						if ( Object.keys(listE).length == 0 ) {
+							//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
+							//var edge = { from: nodeOId, to: nodeId, label: edgeLabel, type: ct.property.value};
+							var edge = { from: nodeOId, to: nodeId, label: "subClassOf", type: "rdfs:subClassOf"};
+							$tw.wiki.addTiddler(edge);
+							$tm.adapter.insertEdge(edge);
+						}
+
+
+
+
+
+
+
+
+					} else if ( typeof ct.oconcept != "undefined" )  {
+						var parameter = ct.property.value.replace(/.*\.(.*)/g,"$1");
+						var ps = JSON.parse($tw.wiki.getTiddlerAsJson(oelement));
+
+
+						var vparameter = "" ;
+						if (typeof ps[parameter] != "undefined"){
+							vparameter += ps[parameter];							
+						}
+
+						vparameter += "# " + ct.oconcept.value + " <br>";
+						$tw.wiki.setText(oelement,parameter,0,vparameter,"");
 
 					}
+
+
+
 				});
 			}			
 		});
