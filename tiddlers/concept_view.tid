@@ -2,13 +2,13 @@ title: $:/linekedhealth/concept_view
 
 \define levelFilter() [tag[$(tiddly-source)$]each[description]sort[description]]
 
-\define propertyFilter() [tag[$(tiddly-source)$]description[$(description-source)$]each[oproperty]sort[oproperty]]
+\define descriptionFilter() [tag[$(tiddly-source)$]has[oproperty]description[$(description-source)$]each[oproperty]sort[oproperty]]
 
-\define MyFilter()
+\define opropertyFilter()
 [tag[$(tiddly-source)$]oproperty{!!oproperty}]
 \end
 
-\define propertylabel()
+\define opropertylabel()
 <$tiddler tiddler={{!!oproperty}} >
 
 *<$link to={{!!title}}>
@@ -27,7 +27,7 @@ title: $:/linekedhealth/concept_view
 \end
 
 \define list2View()
-<$list filter=<<MyFilter>> >
+<$list filter=<<opropertyFilter>> >
 <div class="tw-menu-list-subitem">
 <<valuelabel>>
 </div></$list>
@@ -42,9 +42,9 @@ title: $:/linekedhealth/concept_view
 </div>
 
 <$set name="description-source" value={{!!description}}>
-<$list filter=<<propertyFilter>> >
+<$list filter=<<descriptionFilter>> >
 <div class="tw-menu-list-subitem">
-<<propertylabel>>
+<<opropertylabel>>
 </div>
 <<list2View>>
 </$list>
@@ -67,3 +67,4 @@ title: $:/linekedhealth/concept_view
 <$set name="tiddly-source" value={{!!title}}>
 <<listView>>
 </$set>
+

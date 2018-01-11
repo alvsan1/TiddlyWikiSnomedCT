@@ -24,6 +24,47 @@ exports.startup = function(callback) {
 	
 	// create a new view
 	$tw.wiki.addEventListener("change",function(changes) {
+
+
+		function newNodeView(title,label,description, tags){
+			var nodeId = $tm.adapter.getId(title);
+			var node;
+
+			if ( typeof  nodeId === "undefined" ) {
+				var nodeView = { label: label, 
+								 title: title ,
+								 know: true,
+								 description: description ,
+								 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+								 term: "",				
+								 tags: tags,				 
+								 state: "$:/state/" + title ,
+								 default: "$(currentTiddler)"
+
+								};
+				
+				$tw.wiki.addTiddler(nodeView);
+				nodeId = $tm.adapter.assignId(title);
+				node = $tm.adapter.selectNodeById(nodeId);
+				node.x = 0;
+				node.y = 0;
+
+
+				var newView = new $tm.ViewAbstraction( label, { isCreate: true});
+				newView.setConfig({physics_mode: true, know: true, url: title });
+
+
+				newView.addNode( node );
+				newView.addPlaceholder( node );
+				newView.saveNodePosition(node);
+				
+			}else {
+				node = $tm.adapter.selectNodeById(nodeId);
+			}
+
+			return node;
+		}
+
 		
 		var vistasL2 = $tw.wiki.filterTiddlers("[newkn[true]]");
 		vistasL2.forEach( function (nodeName) {
@@ -177,6 +218,102 @@ exports.startup = function(callback) {
 							$tm.adapter.insertEdge(edge);
 
 						}
+
+					} else if ((typeof ct.oconcept != "undefined") && ( typeof ct.ovalor != "undefined" ) ) {
+
+						newNodeView( ct.property.value, ct.label.value , ct.description.value, null);
+						newNodeView( ct.ovalor.value, ct.ovlabel.value , ct.ovdescription.value, null);
+
+						var nodeSentence = { title: ct.oconcept.value,
+										 property: ct.property.value, 
+										 ovalor: ct.ovalor.value,
+										 state: "$:/state/" + ct.oconcept.value,  
+										 //text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
+										 default: "$(currentTiddler)",
+										 tags: [oelement]
+										};
+						$tw.wiki.addTiddler(nodeSentence);
+
+
+
+
+
+
+						/*
+						var nodeId = $tm.adapter.getId(ct.oconcept.value);
+						var node;
+
+						if ( typeof  nodeId === "undefined" ) {
+							var nodeView = { label: ct.label.value, 
+											 title: ct.oconcept.value ,
+											 know: true,
+											 description: ct.description.value ,									  
+											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+											 term: "",								 
+											 state: "$:/state/" + ct.oconcept.value ,
+											 default: "$(currentTiddler)"
+
+											};
+							
+							$tw.wiki.addTiddler(nodeView);
+							nodeId = $tm.adapter.assignId(ct.oconcept.value);
+							node = $tm.adapter.selectNodeById(nodeId);
+							node.x = 0;
+							node.y = 0;
+
+
+							var newView = new $tm.ViewAbstraction(ct.label.value,{ isCreate: true});
+							newView.setConfig({physics_mode: true, know: true, url: ct.oconcept.value });
+
+
+							newView.addNode( node );
+							newView.addPlaceholder( node );
+							newView.saveNodePosition(node);
+							
+						}else {
+							node = $tm.adapter.selectNodeById(nodeId);
+						}
+///NO///////////////////////////////
+						/*
+						node.x = 0;
+						node.y = 0;
+
+						myView.addNode( node );
+						myView.addPlaceholder( node );
+						myView.saveNodePosition(node);											
+
+						var nodosvista = myView.getNodeData();
+						nodosvista[nodeId]['open-view'] = ct.label.value;
+						myView.saveNodeData(nodosvista);*/
+/////////////////////////////////
+						//var edgeId = $tm.adapter.getId("rdfs:subClassOf");
+						/*if ( typeof  edgeId === "undefined" ) {
+
+						}*/
+						
+						/*
+
+						var toWL = [];
+						toWL[oelement] = true;
+						var typeWL = [];
+						typeWL["rdfs:subClassOf"] = true;
+						var listE = $tm.adapter.getEdges( ct.oconcept.value ,toWL, typeWL);
+
+
+
+						if ( Object.keys(listE).length == 0 ) {
+							//var edgeLabel = ct.property.value.replace(/.*#(.*)/g,"$1");
+							//var edge = { from: nodeOId, to: nodeId, label: edgeLabel, type: ct.property.value};
+							var edge = { from: nodeId, to: nodeOId, label: "subClassOf", type: "rdfs:subClassOf"};
+							$tw.wiki.addTiddler(edge);
+							$tm.adapter.insertEdge(edge);
+
+						}
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -477,3 +614,5 @@ exports.startup = function(callback) {
 };
 
 })();
+
+
