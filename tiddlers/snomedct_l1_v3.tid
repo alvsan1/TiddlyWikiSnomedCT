@@ -1,0 +1,133 @@
+title: $:/linekedhealth/snomedct_l1_v3
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sctf: <http://snomed.info/field/>
+PREFIX scti: <http://snomed.info/id/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sct: <http://snomed.info/id/>
+Select ?property ?oconcept ?description ?label ?list ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel
+where { 
+ { ##snomedCT## ?property ?oconcept .
+ ?oconcept sctf:Description.term.en-us.preferred ?description .
+ ?oconcept rdfs:label ?label } UNION
+ { ?oconcept ?property ##snomedCT## .
+  ?oconcept sctf:Description.term.en-us.preferred ?odescription .
+  ?oconcept rdfs:label ?olabel } UNION 
+ { ?list owl:someValuesFrom ##snomedCT## ;
+  owl:onProperty ?property .
+ ?listb rdf:first ?list ;
+ 	rdf:rest*/rdf:first ?bag .
+ ?bag owl:onProperty ?oproperty ;
+  owl:someValuesFrom ?ovalor .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+  rdfs:label ?label .
+ ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+  rdfs:label ?olabel .
+ ?ovalor sctf:Description.term.en-us.preferred ?ovdescription ;
+  rdfs:label ?ovlabel 
+ FILTER ( ?property != ?oproperty )
+	} UNION 
+ {
+  ?list owl:someValuesFrom ##snomedCT## ;
+  	owl:onProperty ?property .
+  ?listb rdf:first ?list .
+  ?list3 rdf:rest ?listb ;
+  	rdf:rest*/rdf:first ?bag .
+ ?bag owl:onProperty ?oproperty ;
+  owl:someValuesFrom ?ovalor .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+  rdfs:label ?label .
+ ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+  rdfs:label ?olabel .
+ ?ovalor sctf:Description.term.en-us.preferred ?ovdescription ;
+  rdfs:label ?ovlabel .
+ FILTER ( ?property != ?oproperty )
+ } UNION
+ {
+ ?list owl:someValuesFrom ##snomedCT## ;
+  owl:onProperty ?property .
+ ?list2 rdf:first ?list .
+ ?listb rdf:rest ?list2 .
+ ?list4 owl:intersectionOf ?listb .
+ ?list5 owl:someValuesFrom ?list4 .
+ ?list6 rdf:first ?list5 .
+ ?list7 rdf:rest ?list6 .
+ ?list8 owl:intersectionOf ?list7 .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+  rdfs:label ?label .
+ ?oproperty owl:equivalentClass ?list8 ; 
+ 	sctf:Description.term.en-us.preferred ?odescription ;
+  rdfs:label ?olabel    
+ } UNION
+ {
+ ?list owl:someValuesFrom ##snomedCT## ;
+  owl:onProperty ?property .
+ ?listb rdf:first ?list .
+ ?list3 rdf:rest ?listb .
+ ?list4 rdf:rest ?list3 ;
+ 	 rdf:rest*/rdf:first ?bag . 
+ ?bag owl:onProperty ?oproperty ;
+  owl:someValuesFrom ?ovalor .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+  rdfs:label ?label .
+ ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+  rdfs:label ?olabel .
+ ?ovalor sctf:Description.term.en-us.preferred ?ovdescription ;
+  rdfs:label ?ovlabel .
+ FILTER ( ?property != ?oproperty )
+ } UNION
+ {
+ ?list owl:someValuesFrom ##snomedCT## ;
+  owl:onProperty ?property .
+ ?list2 rdf:first ?list .
+ ?list3 rdf:rest ?list2 .
+ ?listb rdf:rest ?list3 .
+ ?list5 owl:intersectionOf ?listb .
+	?list6 owl:someValuesFrom ?list5 .
+ ?oproperty rdfs:subClassOf ?list6 .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+  rdfs:label ?label .
+ ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+  rdfs:label ?olabel 
+ } UNION
+ { 
+ ?list owl:someValuesFrom ##snomedCT## ;
+	  owl:onProperty ?property .
+	 ?list2 rdf:first ?list .
+	 ?listb rdf:rest* ?list2 .
+	 ?list5 owl:intersectionOf ?listb .
+		?list6 owl:someValuesFrom ?list5 . 
+	 ?list7 rdf:first ?list6 . 
+	 ?list8 rdf:rest* ?list7 ;
+	 	 rdf:first ?list9 .
+	 ?list9 owl:someValuesFrom ?bag .
+	 ?bag owl:onProperty ?oproperty ;
+	  owl:someValuesFrom ?ovalor .
+	 ?property sctf:Description.term.en-us.preferred ?description ;
+	  rdfs:label ?label .
+	 ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+	  rdfs:label ?olabel .
+	 ?ovalor sctf:Description.term.en-us.preferred ?ovdescription ;
+   rdfs:label ?ovlabel .
+ } UNION
+ { 
+ ?list owl:someValuesFrom ##snomedCT## ;
+ owl:onProperty ?property .
+ ?list2 rdf:first ?list .
+ ?listb rdf:rest* ?list2 .
+ ?list5 owl:intersectionOf ?listb .
+ ?list6 owl:someValuesFrom ?list5 .
+ ?list7 rdf:first ?list6 .
+ ?list8 rdf:rest* ?list7 ;
+ rdf:first ?oproperty .
+ ?property sctf:Description.term.en-us.preferred ?description ;
+ rdfs:label ?label .
+ ?oproperty sctf:Description.term.en-us.preferred ?odescription ;
+ 	rdfs:label ?olabel .
+ }
+ 	FILTER ( ?property != rdf:first ) 
+}
+group by ?list ?oconcept ?property ?description ?label ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel
+order by ?list ?oproperty

@@ -32,7 +32,7 @@ exports.startup = function(callback) {
 
     //client.get("http://10.0.3.15:8080/rdf4j-server/repositories/snomed02?query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX+sctf%3A+%3Chttp%3A%2F%2Fsnomed.info%2Ffield%2F%3E%0APREFIX+scti%3A+%3Chttp%3A%2F%2Fsnomed.info%2Fid%2F%3E%0ASelect+%3Fconcept+%3Fdescription%0Awhere+%7B+%3Fconcept+sctf%3ADescription.term.en-us.preferred+%3Fdescription+.%0A++++++++%3Fconcept+rdfs%3AsubClassOf+scti%3A138875005+++%7D",args, function (data, response) {
 	//client.get(config.rdfstorage + "?query=" + encodeURIComponent($tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v1").fields.text),args, function (data, response) {	
-	client.get("http://10.0.3.15:8080/rdf4j-server/repositories/snomed02?query=" + encodeURIComponent($tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v1").fields.text),args, function (data, response) {	
+	client.get("http://192.168.56.2:8080/rdf4j-server/repositories/snomedct?query=" + encodeURIComponent($tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v1").fields.text),args, function (data, response) {	
 
     // parsed response body as js object 
     //console.log(JSON.parse(data));
@@ -53,7 +53,7 @@ exports.startup = function(callback) {
 		console.log(JSON.parse(JSON.stringify(changes))["SnomedCT"]);
 		}
 		console.log("---------------------------------------------/n");
-*/		
+*/	
 		if ( JSON.parse(JSON.stringify(changes))["$:/plugins/felixhayashi/tiddlymap/misc/defaultViewHolder"] ){
 			console.log("-----------------Actualizando----------------------/n");
 			var vistName = $tw.wiki.getTiddler("$:/plugins/felixhayashi/tiddlymap/misc/defaultViewHolder").fields.text;
@@ -66,11 +66,19 @@ exports.startup = function(callback) {
 			console.log("-----------------Actualizando----------------------/n");
 			if (JSON.parse(vista)['config.know'] == "true" ) {
 				$tw.wiki.setText("$:/plugins/felixhayashi/tiddlymap/graph/views/" + vistName,"config.know",0,false,"");
-				var queryKw = $tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v2").fields.text.replace(/##snomedCT##/g,"<"+JSON.parse(vista)['config.url']+">");
+				var queryKw = $tw.wiki.getTiddler("$:/linekedhealth/snomedct_l1_v3").fields.text.replace(/##snomedCT##/g,"<"+JSON.parse(vista)['config.url']+">");
 				console.log(queryKw);
-				client.get("http://10.0.3.15:8080/rdf4j-server/repositories/snomed02?query=" + encodeURIComponent(queryKw),args, function (dataV, responseV) {	
+				client.get("http://192.168.56.2:8080/rdf4j-server/repositories/snomedct?query=" + encodeURIComponent(queryKw),args, function (dataV, responseV) {	
 					console.log("-----------------2Do nivel----------------------/n");
 					
+					console.log("-----------------JSON.parse(responseV)----------------------/n");
+					console.log(responseV);
+
+					console.log("-----------------JSON.parse(dataV)----------------------/n");
+					console.log(JSON.parse(dataV));
+
+
+
 					console.log("-----------------JSON.parse(dataV).results.bindings----------------------/n");
 					console.log(JSON.parse(dataV).results.bindings);
 

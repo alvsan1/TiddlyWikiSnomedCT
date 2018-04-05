@@ -87,13 +87,16 @@ exports.startup = function(callback) {
 				
 
 				JSON.parse(JSON.parse(know).concepts).forEach( function(ct){
-						//Indentifico el nodo que incorpora conocimiento
+					//Indentifico el nodo que incorpora conocimiento
 					
 					//var selement = ct.oproperty.value;
 					if 	(typeof ct.list != "undefined"){
+						
 						var nodeId = $tm.adapter.getId(ct.oproperty.value);
-
 						if ( typeof  nodeId === "undefined" ) {
+							//title,label,description, tags
+							//newNodeView(ct.oproperty.value,ct.olabel.value,ct.odescription, "[]");
+
 							var nodeView = { label: ct.olabel.value, 
 											 title: ct.oproperty.value ,
 											 know: true, 									  
@@ -114,45 +117,68 @@ exports.startup = function(callback) {
 							newView.addNode( node );
 							newView.addPlaceholder( node );
 							newView.saveNodePosition(node);							
-
-		    //var nodeId = $tm.adapter.getId(newNode);  					
-
-
+							//var nodeId = $tm.adapter.getId(newNode);  					
 						}
 
 
-						var nodeOVId = $tm.adapter.getId(ct.ovalor.value);
+						
+						if ( typeof ct.ovalor  != "undefined"){
 
-						if ( typeof  nodeOVId === "undefined" ) {
-							var nodeView = { description: ct.ovdescription.value, 
-											 title: ct.ovalor.value , 
-											 know: true,
-											 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
-											 term: "",
-											 label: ct.ovlabel.value,								 
-											 state: "$:/state/" + ct.ovalor.value,
-											 default: "$(currentTiddler)$_Summary"
+							var nodeOVId = $tw.wiki.getTiddler(ct.ovalor.value);
 
-											};
+							if ( typeof nodeOVId === "undefined" ) {
+								var nodeView = { description: ct.ovdescription.value, 
+												 title: ct.ovalor.value , 
+												 know: true,
+												 text: $tw.wiki.getTiddler("$:/linekedhealth/concept_view").fields.text , 
+												 term: "",
+												 tags: ct.list.value + " " + ct.oproperty.value,
+												 label: ct.ovlabel.value,
+												 state: "$:/state/" + ct.ovalor.value,
+												 default: "$(currentTiddler)$_Summary"
+
+												};
+								
+								$tw.wiki.addTiddler(nodeView);
+
+							}else{
+								$tw.wiki.setText(ct.ovalor.value,"tags",0,JSON.parse($tw.wiki.getTiddlerAsJson(ct.ovalor.value)).tags + " " + ct.list.value + " " + ct.oproperty.value,"");
+							}
 							
-							$tw.wiki.addTiddler(nodeView);
+						} 
 
-						}
-
-
-						var nodeList = { title: ct.list.value,
-										 description: ct.description.value,
-										 property: ct.property.value, 
-										 oproperty: ct.oproperty.value, 
-										 ovalor: ct.ovalor.value,
-										 state: "$:/state/" + ct.list.value,  
-										 //text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
-										 default: "$(currentTiddler)",
-										 tags: [oelement]
+						var nodeList;
+						var listKW = $tw.wiki.getTiddler(ct.list.value);						
+						if 	(typeof listKW === "undefined"){
+							nodeList = { 	title: ct.list.value,
+											description: ct.description.value,
+											property: ct.property.value,
+											group : ( typeof ct.ovalor === "undefined" ) ? ct.oproperty.value : null,
+											oproperty: ( typeof ct.ovalor === "undefined" ) ? "" : ct.oproperty.value, 
+											ovalor: ( typeof ct.ovalor === "undefined" ) ? "" : ct.ovalor.value,
+											state: "$:/state/" + ct.list.value,  
+											//text: $tw.wiki.getTiddler("$:/linekedhealth/property_view").fields.text,
+											default: "$(currentTiddler)",
+											tags: [oelement]
 										};
+							$tw.wiki.addTiddler(nodeList);
+							
+						}else{
+							var list = JSON.parse($tw.wiki.getTiddlerAsJson(ct.list.value));
+							if ( typeof ct.ovalor === "undefined" ) {								
+								$tw.wiki.setText(ct.list.value,"group",0,ct.oproperty.value,"");
+							}else{
 
-						$tw.wiki.addTiddler(nodeList);
+								var opropertyList = ( typeof list.oproperty === "undefined" ) ? "" : list.oproperty;
+								var ovalorList = ( typeof list.ovalor === "undefined" ) ? "" : list.ovalor;
+
+								$tw.wiki.setText(ct.list.value,"oproperty",0,opropertyList + " " + ct.oproperty.value,"");
+								$tw.wiki.setText(ct.list.value,"ovalor",0,ovalorList + " " + ct.ovalor.value ,"");							
+							}
+							
+						}
 					} else if ((typeof ct.oconcept != "undefined") && ( typeof ct.odescription != "undefined" ) ) {
+						
 						var nodeId = $tm.adapter.getId(ct.oconcept.value);
 
 						if ( typeof  nodeId === "undefined" ) {
@@ -220,7 +246,7 @@ exports.startup = function(callback) {
 						}
 
 					} else if ((typeof ct.oconcept != "undefined") && ( typeof ct.ovalor != "undefined" ) ) {
-
+						
 						newNodeView( ct.property.value, ct.label.value , ct.description.value, null);
 						newNodeView( ct.ovalor.value, ct.ovlabel.value , ct.ovdescription.value, null);
 
@@ -319,7 +345,7 @@ exports.startup = function(callback) {
 
 
 					} else if ( typeof ct.label != "undefined" )  {
-
+						
 						var nodeId = $tm.adapter.getId(ct.oconcept.value);
 						var node;
 
@@ -407,7 +433,7 @@ exports.startup = function(callback) {
 
 					}
 
-
+					console.log("Salio");
 
 				});
 			}			
