@@ -1,0 +1,21 @@
+title: $:/linekedhealth/snomedct_l2_v1
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sctf: <http://snomed.info/field/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sct: <http://snomed.info/id/>
+
+construct { ##ConceptTW## sctf:Description.term.en-gb.preferred ?description ;
+			sctf:Description.term.en-gb.synonym ?syn;
+				rdfs:label ?label.
+			?reference rdfs:subClassOf sct:138875005;
+    			sctf:Description.term.en-gb.synonym ?refsyn;
+				rdfs:label ?reflabel.}		
+where { ##ConceptTW## sctf:Description.term.en-gb.preferred ?description ;
+    			sctf:Description.term.en-gb.synonym ?syn;
+				rdfs:label ?label.
+  		?reference rdfs:subClassOf ##ConceptTW##;
+    			sctf:Description.term.en-gb.synonym ?refsyn;
+				rdfs:label ?reflabel.
+}

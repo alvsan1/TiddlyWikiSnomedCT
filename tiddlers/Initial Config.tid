@@ -1,0 +1,10 @@
+created: 20190127041011739
+modified: 20190127041011739
+rdfstorage: http://192.168.0.109:8080/rdf4j-server/repositories/snomedct
+initialConcept: http://snomed.info/id/138875005
+nameConcept: SNOMED CT Concept (SNOMED RT+CTV3)
+sparqll1: $:/linekedhealth/snomedct_l1_v4
+sparqll2: $:/linekedhealth/snomedct_l2_v1
+title: Initial Config
+tmap.id: 0d030722-9064-4f15-850d-44676593c1f0
+type: text/vnd.tiddlywiki

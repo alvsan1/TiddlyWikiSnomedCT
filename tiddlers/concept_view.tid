@@ -55,14 +55,9 @@ title: $:/linekedhealth/concept_view
 \end
 
 
-!Label
-<$view field="label" format="htmlencodedplainwikified"></$view>
-
-!Terms
-<$view field="term" format="htmlencodedplainwikified"></$view>
-
-!Synonym
-<$view field="synonym" format="htmlencodedplainwikified"></$view>
+|!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
+|!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
+|!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |
 
 <$set name="tiddly-source" value={{!!title}}>
 <<viewrelations>>

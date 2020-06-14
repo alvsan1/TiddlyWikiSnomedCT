@@ -17,7 +17,7 @@ Object.defineProperty(exports, "__esModule", {
 // Export name and synchronous status
 exports.name = "loadNodes";
 exports.platforms = ["browser"];
-exports.after = ["story"];
+exports.after = ["story_no"];
 exports.synchronous = true;
 
 exports.startup = function(callback) {

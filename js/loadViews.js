@@ -13,7 +13,7 @@ Semantic processing
 // Export name and synchronous status
 exports.name = "loadviews";
 exports.platforms = ["browser"];
-exports.after = ["loadNodes"];
+exports.after = ["loadNodes_no"];
 exports.synchronous = true;
 
 exports.startup = function(callback) {
