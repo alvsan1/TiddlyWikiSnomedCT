@@ -1,13 +1,26 @@
 title: $:/linekedhealth/concept_view
 
-\define levelFilter() [tag[$(tiddly-source)$]has[oproperty]has[group]each[description]sort[description]]
+\define levelFilter() [tag[$(tiddly-source)$]has[parameter]]
+
+\define levelFilterGroup() [tag[$(tiddly-source)$]has[oproperty]has[group]each[description]sort[description]]
 
 \define descriptionFilter() [tag[$(tiddly-source)$]has[group]description[$(description-source)$]each[oproperty]sort[oproperty ovalor]]
 
 \define ovalorFilter() $(ovalor-list)$ +[tag[$(oproperty-item)$]tag[$(node-list)$]]
 
 \define viewrelations()
-<$list filter=<<levelFilter>> >
+
+
+<$list filter=<<levelFilterGroup>> >
+<div class="tw-menu-list-subitem">
+
+!<$view field="description" />
+</div>
+
+</$list>
+
+
+<$list filter=<<levelFilterGroup>> >
 <div class="tw-menu-list-subitem">
 
 !<$view field="description" />
@@ -55,14 +68,12 @@ title: $:/linekedhealth/concept_view
 \end
 
 
-!Label
-<$view field="label" format="htmlencodedplainwikified"></$view>
+|!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
+|!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
+|!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |
 
-!Terms
-<$view field="term" format="htmlencodedplainwikified"></$view>
 
-!Synonym
-<$view field="synonym" format="htmlencodedplainwikified"></$view>
+<$tiddlymap editor="vis" view={{!!label}} height="450px"></$tiddlymap>
 
 <$set name="tiddly-source" value={{!!title}}>
 <<viewrelations>>

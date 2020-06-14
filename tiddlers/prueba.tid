@@ -1,8 +1,0 @@
-/*\
-title: $:/plugins/alvsan/semantic/prueba
-Macro de prueba
-\*/
-\define sayhi(name:"Bugs Bunny" address:"Rabbit Hole Hill")
-	Hi, I'm $name$ and I live in $address$.
-\end
-
