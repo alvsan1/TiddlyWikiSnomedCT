@@ -1,0 +1,51 @@
+title: $:/linekedhealth/snomedct_l2_v2
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sctf: <http://snomed.info/field/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sct: <http://snomed.info/id/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+construct { ?reference rdfs:subClassOf ##ConceptTW##;
+    			sctf:Description.term.en-us.preferred ?refdescription;
+    			sctf:Description.term.en-gb.synonym ?refsyn;
+				rdfs:label ?reflabel.
+  			?list owl:someValuesFrom ##ConceptTW## ;
+    			owl:onProperty ?property .
+  			?bag rdf:List ?list ; 				
+            	owl:onProperty ?oproperty ;
+                owl:someValuesFrom ?ovalor .
+  			?property sctf:Description.term.en-us.preferred ?propdescription ;
+    			rdfs:label ?proplabel;
+  				sctf:Description.term.en-gb.synonym ?propsyn .
+  			?oproperty sctf:Description.term.en-us.preferred ?opropdescription ;
+                rdfs:label ?oproplabel;
+                sctf:Description.term.en-gb.synonym ?opropsyn .
+  	    	?ovalor sctf:Description.term.en-us.preferred ?ovalordescription ;
+ 				rdfs:label ?ovalorlabel ;
+   				sctf:Description.term.en-gb.synonym ?ovalorsyn. 
+  			}		
+where { ?reference rdfs:subClassOf ##ConceptTW##;   
+				rdfs:label ?reflabel;
+  				sctf:Description.term.en-us.preferred ?refdescription .
+ 		OPTIONAL {  ?reference sctf:Description.term.en-gb.synonym ?refsyn} .
+  		?list owl:someValuesFrom ##ConceptTW## ;
+    		owl:onProperty ?property .
+  		?listb rdf:first ?list ;
+      		rdf:rest ?listc .
+			?listc rdf:rest*/rdf:first ?bag .
+ 		?bag owl:onProperty ?oproperty ;
+  			 owl:someValuesFrom ?ovalor .
+  		?property sctf:Description.term.en-us.preferred ?propdescription ;
+    		rdfs:label ?proplabel.
+  			OPTIONAL { ?property sctf:Description.term.en-gb.synonym ?propsyn } .
+  		?oproperty sctf:Description.term.en-us.preferred ?opropdescription ;
+                rdfs:label ?oproplabel.
+                OPTIONAL { ?oproperty sctf:Description.term.en-gb.synonym ?opropsyn } .
+  		?ovalor sctf:Description.term.en-us.preferred ?ovalordescription ;
+ 				rdfs:label ?ovalorlabel ;
+   				OPTIONAL { ?ovalor sctf:Description.term.en-gb.synonym ?ovalorsyn. }
+  				
+       
+}

@@ -1,0 +1,21 @@
+title: $:/linekedhealth/node_view
+
+<$link to={{!!properties}}>
+<$tiddler tiddler={{!!properties}}>
+
+**<$view field="label" />
+
+</$tiddler>
+</$link>
+
+
+<$list filter={{!!tags}} >
+<$link to={{!!title}}>
+
+***<$view field="label" />
+
+</$link>
+</$list>
+
+
+

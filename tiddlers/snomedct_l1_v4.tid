@@ -16,6 +16,6 @@ where { sct:138875005 sctf:Description.term.en-gb.preferred ?description ;
     			sctf:Description.term.en-gb.synonym ?syn;
 				rdfs:label ?label.
   		?reference rdfs:subClassOf sct:138875005;
-    			sctf:Description.term.en-gb.synonym ?refsyn;
-				rdfs:label ?reflabel.
+ 				rdfs:label ?reflabel.
+ 		OPTIONAL { ?reference sctf:Description.term.en-gb.synonym ?refsyn }
 }

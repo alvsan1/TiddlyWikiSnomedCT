@@ -1,0 +1,116 @@
+title: $:/linekedhealth/concept_view2_5
+
+\define levelFilter() [tag[$(tiddly-source)$]!has[node]]
+
+\define levelFilterParameter() [tag[$(tiddlyParameter-source)$]!has[node]]
+
+\define levelNodeFilter() [tag[$(tiddly-source)$]has[node]]
+
+\define levelNodeFilterParameter() [tag[$(tiddlyNodeParameter-source)$]has[node]]
+
+\define jerarquiaFilter() [subclassof[$(tiddly-source)$]]
+
+\define viewrelations()
+
+<$list filter=<<levelFilter>> >
+
+<div class="tw-menu-list-subitem">
+
+<$link to={{!!title}}>
+
+*<$view field="label" />
+
+<$set name="tiddlyParameter-source" value={{!!title}}>
+<$list filter=<<levelFilterParameter>> >
+<$link to={{!!title}}>
+
+**<$view field="title" />
+</$link>
+
+</$list>
+
+</$set>
+</$link>
+
+</div>
+
+</$list>
+
+
+
+<$list filter=<<levelNodeFilter>> >
+
+<div class="tw-menu-list-subitem">
+
+<$link to={{!!properties}}>
+<$tiddler tiddler={{!!properties}}>
+
+*<$view field="label" />
+
+</$tiddler>
+
+
+<$set name="tiddlyNodeParameter-source" value={{!!title}}>
+<$list filter={{!!listElements}} >
+<$transclude tiddler={{!!title}}/>
+
+</$list>
+
+</$set>
+</$link>
+
+</div>
+
+</$list>
+
+
+
+\end
+
+
+|!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
+|!Comments |<$view field="comments" format="htmlencodedplainwikified"></$view> |
+|!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
+|!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |
+
+
+!SupClassOf
+
+<$list filter={{!!subclassof}} >
+
+<div class="tw-menu-list-subitem">
+
+<$link to={{!!title}}>
+
+*<$view field="label" />
+</$link>
+
+</div>
+
+</$list>
+
+
+<$set name="tiddly-source" value={{!!title}}>
+
+!SubClassOf
+
+<$list filter=<<jerarquiaFilter>> >
+
+<div class="tw-menu-list-subitem">
+
+<$link to={{!!title}}>
+
+*<$view field="label" />
+</$link>
+
+</div>
+
+</$list>
+
+!Relations
+
+<<viewrelations>>
+</$set>
+
+
+<$tiddlymap editor="vis" view={{!!label}} height="450px"></$tiddlymap>
