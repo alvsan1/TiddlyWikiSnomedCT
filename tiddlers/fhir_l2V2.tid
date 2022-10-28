@@ -1,0 +1,47 @@
+title: $:/linekedhealth/fhir_l2V2
+tags: $:/tags/sparql
+
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+
+construct { ##ConceptTW## rdfs:domain ?parameter  .
+	?parameter owl:someValuesFrom  ?reference ;
+      owl:allValuesFrom ?value  ;
+      rdfs:range ?type;
+      dc:tittle ?title;
+      rdfs:comment ?comment;
+      rdfs:label ?label .
+	?value dc:tittle ?valueTitle;
+		rdfs:comment ?valueComment;
+		rdfs:label ?valueLabel .
+	?reference dc:title ?referenceTitle ;
+    		rdfs:comment ?referenceComment ;
+    	    rdfs:label ?referenceLabel.
+   	?type dc:title ?referenceTitle;
+    	rdfs:comment ?referenceComment;
+    	rdfs:label ?referenceLabel .}
+where { ?parameter rdfs:domain ##ConceptTW##.
+	Optional {?parameter dc:title ?title }
+ 	Optional {?parameter rdfs:comment ?comment }
+	Optional {?parameter rdfs:label ?label }
+	Optional { ?parameter  rdfs:subClassOf ?blank. 
+          ?blank owl:someValuesFrom ?reference .
+  		  Optional {?reference dc:title ?referenceTitle }
+ 		  Optional {?reference rdfs:comment ?referenceComment }
+		  Optional {?reference rdfs:label ?referenceLabel }
+  	}
+  	Optional { ?parameter rdfs:range ?type  .
+  	Optional {?type dc:title ?referenceTitle }
+ 	Optional {?type rdfs:comment ?referenceComment }
+    Optional {?type rdfs:label ?referenceLabel }
+  	}
+ 	Optional { ##ConceptTW## rdfs:subClassOf ?blank2.
+  		  ?blank owl:allValuesFrom ?value ;
+      			owl:onProperty ?parameter .
+                Optional {?value dc:title ?valueTitle }
+ 				Optional {?value rdfs:comment ?valueComment }
+				Optional {?value rdfs:label ?valueLabel }} 
+}

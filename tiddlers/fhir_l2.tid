@@ -1,0 +1,23 @@
+title: $:/linekedhealth/fhir_l2
+tags: $:/tags/sparql
+
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+Select ?property ?oconcept ?description ?label ?list ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel
+where {{
+##ConceptTW## ?property ?oconcept .
+FILTER (!isBlank(?oconcept)) 
+}
+union
+  {?property ?propertyAux ##ConceptTW## ;    
+   	<http://www.w3.org/2000/01/rdf-schema#comment> ?description ;
+    <http://www.w3.org/2000/01/rdf-schema#label> ?label ;    
+    <http://www.w3.org/2000/01/rdf-schema#range> ?oproperty .
+    ?list owl:onProperty ?property.
+   ?oproperty <http://www.w3.org/2000/01/rdf-schema#label> ?olabel .    
+    OPTIONAL{ ?oproperty <http://www.w3.org/2000/01/rdf-schema#comment> ?odescription }
+    FILTER (?propertyAux != rdfs:type )
+  }
+}

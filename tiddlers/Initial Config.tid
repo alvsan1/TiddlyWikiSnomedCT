@@ -1,5 +1,6 @@
 created: 20190127041011739
 modified: 20190127041011739
+<<<<<<< HEAD
 rdfstorage: http://192.168.1.15:8080/rdf4j-server/repositories/snomedct
 initialConcept: http://snomed.info/id/138875005
 nameConcept: SNOMED CT Concept (SNOMED RT+CTV3)
@@ -7,5 +8,14 @@ sparqll1: $:/linekedhealth/snomedct_l1_v4
 sparqll2: $:/linekedhealth/snomedct_l2_v2
 conceptView: $:/linekedhealth/concept_view2_5
 title: Initial Config
+=======
+rdfstorage: http://192.168.43.15:8080/rdf4j-server/repositories/fhir
+initialConcept: fhir:DomainResource
+sparqll1: $:/linekedhealth/fhir_l1V2
+sparqll2: $:/linekedhealth/fhir_l2V2
+conceptView: $:/linekedhealth/concept_view
+title: Initial Config
+nameConcept: DomainResource
+>>>>>>> 3ce5b6110bb61abfc25fe9bb3c8b6d9d245ab301
 tmap.id: 0d030722-9064-4f15-850d-44676593c1f0
 type: text/vnd.tiddlywiki

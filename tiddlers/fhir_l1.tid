@@ -1,0 +1,15 @@
+title: $:/linekedhealth/fhir_l1
+tags: $:/tags/sparql
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+Select ?concept ?description ?property (concat('[\"', (group_concat( ?oconcept ; separator="\",\"" )) , '\"]' ) as ?oconcepts)
+where { ?concept rdfs:label ?description .
+        ?concept rdfs:subClassOf fhir:DomainResource  .
+		?concept ?property ?oconcept .
+  	FILTER ( ?oconcept != owl:Class && (!isBlank(?oconcept))) .
+    FILTER ( ( ?property = rdfs:subClassOf && ?oconcept = fhir:DomainResource)  || (?property != rdfs:subClassOf )).
+  	OPTIONAL { ?oconcept rdfs:description ?odescription }
+}
+group by ?concept ?description ?property

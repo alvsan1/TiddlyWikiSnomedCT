@@ -1,0 +1,8 @@
+title: $:/linekedhealth/parameter_view
+
+
+|!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
+|!Description|<$view field="description" format="htmlencodedplainwikified"></$view> |
+|!Comments |<$view field="comments" format="htmlencodedplainwikified"></$view> |
+|!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
+|!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |

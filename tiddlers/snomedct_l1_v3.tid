@@ -9,13 +9,13 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX sct: <http://snomed.info/id/>
 Select ?property ?oconcept ?description ?label ?list ?oproperty ?odescription ?olabel ?ovalor ?ovdescription ?ovlabel
 where { 
- { ##snomedCT## ?property ?oconcept .
+ { ##ConceptTW## ?property ?oconcept .
  ?oconcept sctf:Description.term.en-us.preferred ?description .
  ?oconcept rdfs:label ?label } UNION
- { ?oconcept ?property ##snomedCT## .
+ { ?oconcept ?property ##ConceptTW## .
   ?oconcept sctf:Description.term.en-us.preferred ?odescription .
   ?oconcept rdfs:label ?olabel } UNION 
- { ?list owl:someValuesFrom ##snomedCT## ;
+ { ?list owl:someValuesFrom ##ConceptTW## ;
   owl:onProperty ?property .
  ?listb rdf:first ?list ;
  	rdf:rest*/rdf:first ?bag .
@@ -30,7 +30,7 @@ where {
  FILTER ( ?property != ?oproperty )
 	} UNION 
  {
-  ?list owl:someValuesFrom ##snomedCT## ;
+  ?list owl:someValuesFrom ##ConceptTW## ;
   	owl:onProperty ?property .
   ?listb rdf:first ?list .
   ?list3 rdf:rest ?listb ;
@@ -46,7 +46,7 @@ where {
  FILTER ( ?property != ?oproperty )
  } UNION
  {
- ?list owl:someValuesFrom ##snomedCT## ;
+ ?list owl:someValuesFrom ##ConceptTW## ;
   owl:onProperty ?property .
  ?list2 rdf:first ?list .
  ?listb rdf:rest ?list2 .
@@ -62,7 +62,7 @@ where {
   rdfs:label ?olabel    
  } UNION
  {
- ?list owl:someValuesFrom ##snomedCT## ;
+ ?list owl:someValuesFrom ##ConceptTW## ;
   owl:onProperty ?property .
  ?listb rdf:first ?list .
  ?list3 rdf:rest ?listb .
@@ -79,7 +79,7 @@ where {
  FILTER ( ?property != ?oproperty )
  } UNION
  {
- ?list owl:someValuesFrom ##snomedCT## ;
+ ?list owl:someValuesFrom ##ConceptTW## ;
   owl:onProperty ?property .
  ?list2 rdf:first ?list .
  ?list3 rdf:rest ?list2 .
@@ -93,7 +93,7 @@ where {
   rdfs:label ?olabel 
  } UNION
  { 
- ?list owl:someValuesFrom ##snomedCT## ;
+ ?list owl:someValuesFrom ##ConceptTW## ;
 	  owl:onProperty ?property .
 	 ?list2 rdf:first ?list .
 	 ?listb rdf:rest* ?list2 .
@@ -113,7 +113,7 @@ where {
    rdfs:label ?ovlabel .
  } UNION
  { 
- ?list owl:someValuesFrom ##snomedCT## ;
+ ?list owl:someValuesFrom ##ConceptTW## ;
  owl:onProperty ?property .
  ?list2 rdf:first ?list .
  ?listb rdf:rest* ?list2 .

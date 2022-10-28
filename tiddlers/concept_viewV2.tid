@@ -1,0 +1,55 @@
+title: $:/linekedhealth/concept_viewV2
+
+\define levelFilter() [tag[$(tiddly-source)$]]
+
+\define levelFilterParameter() [tag[$(tiddlyParameter-source)$]]
+
+
+\define viewrelations()
+
+<$list filter=<<levelFilter>> >
+
+<div class="tw-menu-list-subitem">
+
+<$link to={{!!title}}>
+
+*<$view field="label" />
+<$set name="tiddlyParameter-source" value={{!!title}}>
+<$list filter=<<levelFilterParameter>> >
+<$link to={{!!title}}>
+
+**<$view field="title" />
+</$link>
+
+
+</$list>
+
+</$set>
+</$link>
+
+
+
+
+</div>
+
+
+
+</$list>
+
+
+\end
+
+
+|!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
+|!Comments |<$view field="comments" format="htmlencodedplainwikified"></$view> |
+|!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
+|!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |
+
+
+<$set name="tiddly-source" value={{!!title}}>
+<<viewrelations>>
+</$set>
+
+
+<$tiddlymap editor="vis" view={{!!label}} height="450px"></$tiddlymap>
+
