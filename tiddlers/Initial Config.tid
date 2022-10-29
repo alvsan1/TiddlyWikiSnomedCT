@@ -1,6 +1,5 @@
 created: 20190127041011739
 modified: 20190127041011739
-<<<<<<< HEAD
 rdfstorage: http://192.168.1.15:8080/rdf4j-server/repositories/snomedct
 initialConcept: http://snomed.info/id/138875005
 nameConcept: SNOMED CT Concept (SNOMED RT+CTV3)
