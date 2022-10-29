@@ -71,12 +71,8 @@ title: $:/linekedhealth/concept_view
 |!Label |<$view field="label" format="htmlencodedplainwikified"></$view> |
 |!Terms |<$view field="term" format="htmlencodedplainwikified"></$view> |
 |!Synonym | <$view field="synonym" format="htmlencodedplainwikified"></$view> |
-<<<<<<< HEAD
-=======
-
 
 <$tiddlymap editor="vis" view={{!!label}} height="450px"></$tiddlymap>
->>>>>>> 3ce5b6110bb61abfc25fe9bb3c8b6d9d245ab301
 
 <$set name="tiddly-source" value={{!!title}}>
 <<viewrelations>>
