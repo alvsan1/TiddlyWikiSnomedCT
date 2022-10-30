@@ -73,6 +73,7 @@ exports.startup = function(callback) {
 
 
 			var know = $tw.wiki.getTiddlerAsJson(nodeName);
+			//Se podria hacer al final por seguridad
 			$tw.wiki.deleteTiddler(nodeName);
 
 			//Generalizarlo para cualquier repo
